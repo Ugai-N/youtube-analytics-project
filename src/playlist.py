@@ -2,11 +2,11 @@ import datetime
 import isodate
 import os
 
-from src.channel import Channel
+from src.channel import YouTube
 from src.video import PLVideo
 
 
-class PlayList:
+class PlayList(YouTube):
     def __init__(self, pl_id):
         """Экземпляр инициализируется  id плейлиста.
         Дальше все данные будут подтягиваться по API."""
@@ -18,7 +18,7 @@ class PlayList:
         '''Возвращает коллекцию списков воспроизведения, соответствующих параметрам запроса API.
         Поиск по ID канала или плейлиста. Выход в разрезе плейлиста: contentDetails (кол-во видео в плейлисте) +
         snippet (title, description etc)'''
-        return Channel.get_service().playlists().list(id=self.pl_id,
+        return YouTube.get_service().playlists().list(id=self.pl_id,
                                                       part='contentDetails, snippet',
                                                       maxResults=50,
                                                       ).execute()
@@ -27,7 +27,7 @@ class PlayList:
         '''Возвращает коллекцию элементов плейлиста, соответствующих параметрам запроса API.
         Выход в разрезе видео: contentDetails (только ID и дата публикации) +
         id, snippet, status'''
-        return Channel.get_service().playlistItems().list(playlistId=self.pl_id,
+        return YouTube.get_service().playlistItems().list(playlistId=self.pl_id,
                                                           part='contentDetails',
                                                           maxResults=50,
                                                           ).execute()
